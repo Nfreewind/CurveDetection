@@ -28,7 +28,8 @@ void Canvas::detectContours() {
 
 	polygons.clear();
 
-	cv::Mat mat = cv::Mat(orig_image.height(), orig_image.width(), CV_8UC1, orig_image.bits(), orig_image.bytesPerLine()).clone();	cv::threshold(mat, mat, 127, 255, cv::THRESH_BINARY);
+	cv::Mat mat = cv::Mat(orig_image.height(), orig_image.width(), CV_8UC1, orig_image.bits(), orig_image.bytesPerLine()).clone();
+	cv::threshold(mat, mat, 40, 255, cv::THRESH_BINARY);
 
 	// extract contours
 	std::vector<std::vector<cv::Point>> contours;
@@ -64,13 +65,17 @@ void Canvas::detectContours() {
 	}
 }
 
-void Canvas::detectCurves() {
+void Canvas::detectCurves(int num_iterations, int min_points, float max_error_ratio_to_radius, float cluster_epsilon, float min_angle, float min_radius, float max_radius) {
+	circles.clear();
+
+	if (polygons.size() == 0) detectContours();
+
 	CurveDetector cd;
 	for (int i = 0; i < polygons.size(); i++) {
 		if (polygons[i].contour.size() < 100) continue;
 
 		std::vector<Circle> results;
-		cd.detect(polygons[i].contour, 150, 8, 8, 45.0 / 180.0 * CV_PI, 50, 400, results);
+		cd.detect(polygons[i].contour, num_iterations, min_points, max_error_ratio_to_radius, cluster_epsilon, min_angle, min_radius, max_radius, results);
 		circles.insert(circles.end(), results.begin(), results.end());
 	}
 }
@@ -130,7 +135,8 @@ void Canvas::paintEvent(QPaintEvent *event) {
 
 		for (auto& circle : circles) {
 			painter.setPen(QPen(QColor(255, 255, 0), 3));
-			painter.drawEllipse(QPointF(circle.center.x * image_scale, circle.center.y * image_scale), circle.radius * image_scale, circle.radius * image_scale);
+			painter.drawArc((circle.center.x - circle.radius) * image_scale, (circle.center.y - circle.radius) * image_scale, circle.radius * 2 * image_scale, circle.radius * 2 * image_scale, -circle.start_angle / CV_PI * 180 * 16, -circle.angle_range / CV_PI * 180 * 16);
+			//painter.drawEllipse(QPointF(circle.center.x * image_scale, circle.center.y * image_scale), circle.radius * image_scale, circle.radius * image_scale);
 
 			painter.setPen(QPen(QColor(255, 0, 0), 1));
 			for (int i = 0; i < circle.points.size(); i++) {

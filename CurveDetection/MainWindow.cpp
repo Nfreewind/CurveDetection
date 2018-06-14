@@ -1,5 +1,6 @@
 #include "MainWindow.h"
 #include <QFileDialog>
+#include "OptionDialog.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 	ui.setupUi(this);
@@ -28,6 +29,9 @@ void MainWindow::onDetectContours() {
 }
 
 void MainWindow::onDetectCurves() {
-	canvas.detectCurves();
-	canvas.update();
+	OptionDialog dlg;
+	if (dlg.exec()) {
+		canvas.detectCurves(dlg.getNumIterations(), dlg.getMinPoints(), dlg.getMaxErrorRatioToRadius(), dlg.getClusterEpsilon(), dlg.getMinAngle() / 180.0 * CV_PI, dlg.getMinRadius(), dlg.getMaxRadius());
+		canvas.update();
+	}
 }

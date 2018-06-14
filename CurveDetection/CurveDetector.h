@@ -29,6 +29,8 @@ public:
 			return;
 		}
 
+		std::sort(angles.begin(), angles.end());
+
 		start_angle = angles[0];
 		end_angle = angles.back();
 		float max_gap = angles[0] + CV_PI * 2 - angles.back();
@@ -52,7 +54,7 @@ public:
 	~CurveDetector();
 
 public:
-	void detect(const std::vector<cv::Point2f>& polygon, int min_points, float epsilon, float cluster_epsilon, float min_angle, float min_radius, float max_radius, std::vector<Circle>& circles);
+	void detect(const std::vector<cv::Point2f>& polygon, int num_iter, int min_points, float max_error_ratio_to_radius, float cluster_epsilon, float min_angle, float min_radius, float max_radius, std::vector<Circle>& circles);
 	Circle circleFromPoints(const cv::Point2f& p1, const cv::Point2f& p2, const cv::Point2f& p3);
 	float crossProduct(const cv::Point2f& a, const cv::Point2f& b);
 };

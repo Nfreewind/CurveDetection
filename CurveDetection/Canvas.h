@@ -33,7 +33,7 @@ public:
 
 	void loadImage(const QString& filename);
 	void detectContours();
-	void detectCurves();
+	void detectCurves(int num_iterations, int min_points, float max_error_ratio_to_radius, float cluster_epsilon, float min_angle, float min_radius, float max_radius);
 	void keyPressEvent(QKeyEvent* e);
 	void keyReleaseEvent(QKeyEvent* e);
 
