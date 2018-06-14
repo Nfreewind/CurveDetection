@@ -39,10 +39,10 @@
     <ClCompile Include="Canvas.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CurveDetector.cpp">
+    <ClCompile Include="OptionDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OptionDialog.cpp">
+    <ClCompile Include="..\CurveDetectionNoGUI\CurveDetector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -71,7 +71,7 @@
     <ClInclude Include="Canvas.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CurveDetector.h">
+    <ClInclude Include="..\CurveDetectionNoGUI\CurveDetector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

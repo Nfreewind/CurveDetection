@@ -7,10 +7,54 @@ CurveDetector::CurveDetector() {
 CurveDetector::~CurveDetector() {
 }
 
+std::vector<Polygon> CurveDetector::findContours(const cv::Mat& image) {
+	std::vector<Polygon> polygons;
+
+	cv::Mat mat = image.clone();
+	cv::threshold(mat, mat, 40, 255, cv::THRESH_BINARY);
+
+	// extract contours
+	std::vector<std::vector<cv::Point>> contours;
+	std::vector<cv::Vec4i> hierarchy;
+	//cv::findContours(mat, contours, hierarchy, cv::RETR_CCOMP, cv::CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
+	cv::findContours(mat, contours, hierarchy, cv::RETR_CCOMP, cv::CHAIN_APPROX_NONE, cv::Point(0, 0));
+
+	for (int i = 0; i < hierarchy.size(); i++) {
+		if (hierarchy[i][3] != -1) continue;
+		if (contours[i].size() < 3) continue;
+
+		Polygon polygon;
+		polygon.contour.resize(contours[i].size());
+		for (int j = 0; j < contours[i].size(); j++) {
+			polygon.contour[j] = cv::Point2f(contours[i][j].x, contours[i][j].y);
+		}
+
+		if (polygon.contour.size() >= 3) {
+			// obtain all the holes inside this contour
+			int hole_id = hierarchy[i][2];
+			while (hole_id != -1) {
+				std::vector<cv::Point2f> hole;
+				hole.resize(contours[hole_id].size());
+				for (int j = 0; j < contours[hole_id].size(); j++) {
+					hole[j] = cv::Point2f(contours[hole_id][j].x, contours[hole_id][j].y);
+				}
+				polygon.holes.push_back(hole);
+				hole_id = hierarchy[hole_id][0];
+			}
+
+			polygons.push_back(polygon);
+		}
+	}
+
+	return polygons;
+}
+
 void CurveDetector::detect(const std::vector<cv::Point2f>& polygon, int num_iter, int min_points, float max_error_ratio_to_radius, float cluster_epsilon, float min_angle, float min_radius, float max_radius, std::vector<Circle>& circles) {
 	circles.clear();
 
 	int N = polygon.size();
+	if (N < min_points) return;
+
 	int N2 = N;
 	while (N2 < cluster_epsilon) N2 += N;
 
@@ -24,12 +68,12 @@ void CurveDetector::detect(const std::vector<cv::Point2f>& polygon, int num_iter
 		int best_index1;
 
 		for (int iter = 0; iter < num_iter; iter++) {
+			// randomly sample index1 as a first point, and then, sample two other points that are close to the first one
 			int index1 = -1;
 			int index2 = -1;
 			int index3 = -1;
 			for (int iter2 = 0; iter2 < num_iter; iter2++) {
 				index1 = unused_list[rand() % unused_list.size()];
-				//if (used[index1]) continue;
 				index2 = (int)(index1 + rand() % (int)(cluster_epsilon * 2 + 1) - cluster_epsilon + N2) % N;
 				if (used[index2]) continue;
 				index3 = (int)(index1 + rand() % (int)(cluster_epsilon * 2 + 1) - cluster_epsilon + N2) % N;
@@ -38,6 +82,8 @@ void CurveDetector::detect(const std::vector<cv::Point2f>& polygon, int num_iter
 			}
 
 			if (index1 == -1 || index2 == -1 || index3 == -1) continue;
+
+			// if three points are collinear, reject this candidate.
 			if (std::abs(crossProduct(polygon[index2] - polygon[index1], polygon[index3] - polygon[index1])) < 0.001) continue;
 
 			// calculate the circle center from three points
@@ -69,6 +115,7 @@ void CurveDetector::detect(const std::vector<cv::Point2f>& polygon, int num_iter
 				}
 			}
 
+			// calculate angle range
 			circle.setMinMaxAngles(angles);
 			if (circle.angle_range < min_angle) continue;
 
@@ -79,6 +126,7 @@ void CurveDetector::detect(const std::vector<cv::Point2f>& polygon, int num_iter
 			}
 		}
 
+		// if the best detected curve does not have enough supporing points, terminate the algorithm.
 		if (max_num_points < min_points) break;
 
 		// update used flag
@@ -103,14 +151,10 @@ void CurveDetector::detect(const std::vector<cv::Point2f>& polygon, int num_iter
 			}
 		}
 
-		// update unsed list
+		// update used list
 		for (int i = unused_list.size() - 1; i >= 0; i--) {
 			if (used[unused_list[i]]) unused_list.erase(unused_list.begin() + i);
 		}
-
-		std::cout << "radius=" << best_circle.radius << std::endl;
-		std::cout << "angle=" << best_circle.angle_range / CV_PI * 180 << std::endl;
-		std::cout << "#points=" << best_circle.points.size() << std::endl;
 
 		circles.push_back(best_circle);
 	}

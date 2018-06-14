@@ -4,15 +4,7 @@
 #include <vector>
 #include <QWidget>
 #include <QKeyEvent>
-#include <opencv2/imgproc.hpp>
-#include <opencv2/highgui.hpp>
-#include "CurveDetector.h"
-
-class Polygon {
-public:
-	std::vector<cv::Point2f> contour;
-	std::vector<std::vector<cv::Point2f>> holes;
-};
+#include "../CurveDetectionNoGUI/CurveDetector.h"
 
 class Canvas : public QWidget {
 private:

@@ -1,7 +1,14 @@
 #pragma once
 
 #include <vector>
-#include <opencv2/core.hpp>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/highgui.hpp>
+
+class Polygon {
+public:
+	std::vector<cv::Point2f> contour;
+	std::vector<std::vector<cv::Point2f>> holes;
+};
 
 class Circle {
 public:
@@ -49,13 +56,14 @@ public:
 };
 
 class CurveDetector {
-public:
+protected:
 	CurveDetector();
 	~CurveDetector();
 
 public:
-	void detect(const std::vector<cv::Point2f>& polygon, int num_iter, int min_points, float max_error_ratio_to_radius, float cluster_epsilon, float min_angle, float min_radius, float max_radius, std::vector<Circle>& circles);
-	Circle circleFromPoints(const cv::Point2f& p1, const cv::Point2f& p2, const cv::Point2f& p3);
-	float crossProduct(const cv::Point2f& a, const cv::Point2f& b);
+	static std::vector<Polygon> findContours(const cv::Mat& image);
+	static void detect(const std::vector<cv::Point2f>& polygon, int num_iter, int min_points, float max_error_ratio_to_radius, float cluster_epsilon, float min_angle, float min_radius, float max_radius, std::vector<Circle>& circles);
+	static Circle circleFromPoints(const cv::Point2f& p1, const cv::Point2f& p2, const cv::Point2f& p3);
+	static float crossProduct(const cv::Point2f& a, const cv::Point2f& b);
 };
 
