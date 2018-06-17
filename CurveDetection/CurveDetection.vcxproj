@@ -113,7 +113,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\CurveDetectionNoGUI\CurveDetector.cpp" />
+    <ClCompile Include="..\CurveDetectionNoGUI\LineDetector.cpp" />
+    <ClCompile Include="..\CurveDetectionNoGUI\MeanShift.cpp" />
+    <ClCompile Include="..\CurveDetectionNoGUI\OrientationEstimator.cpp" />
+    <ClCompile Include="..\CurveDetectionNoGUI\Util.cpp" />
     <ClCompile Include="Canvas.cpp" />
+    <ClCompile Include="LineOptionDialog.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="OptionDialog.cpp" />
@@ -122,6 +127,7 @@
     <QtMoc Include="MainWindow.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtUic Include="LineOptionDialog.ui" />
     <QtUic Include="MainWindow.ui" />
     <QtUic Include="OptionDialog.ui" />
   </ItemGroup>
@@ -130,7 +136,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\CurveDetectionNoGUI\CurveDetector.h" />
+    <ClInclude Include="..\CurveDetectionNoGUI\LineDetector.h" />
+    <ClInclude Include="..\CurveDetectionNoGUI\MeanShift.h" />
+    <ClInclude Include="..\CurveDetectionNoGUI\OrientationEstimator.h" />
+    <ClInclude Include="..\CurveDetectionNoGUI\Util.h" />
     <ClInclude Include="Canvas.h" />
+    <QtMoc Include="LineOptionDialog.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;.\..\opencv3.4\include</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UNICODE;WIN32;WIN64;QT_DLL;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB</Define>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;.\..\opencv3.4\include</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UNICODE;WIN32;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB</Define>
+    </QtMoc>
     <QtMoc Include="OptionDialog.h">
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;.\..\opencv3.4\include</IncludePath>
       <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UNICODE;WIN32;WIN64;QT_DLL;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB</Define>

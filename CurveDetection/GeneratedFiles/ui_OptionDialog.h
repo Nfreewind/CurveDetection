@@ -45,7 +45,7 @@ public:
     {
         if (OptionDialog->objectName().isEmpty())
             OptionDialog->setObjectName(QStringLiteral("OptionDialog"));
-        OptionDialog->resize(301, 230);
+        OptionDialog->resize(301, 224);
         pushButtonOK = new QPushButton(OptionDialog);
         pushButtonOK->setObjectName(QStringLiteral("pushButtonOK"));
         pushButtonOK->setGeometry(QRect(40, 180, 91, 31));

@@ -18,4 +18,5 @@ public slots:
 	void onOpen();
 	void onDetectContours();
 	void onDetectCurves();
+	void onDetectLines();
 };

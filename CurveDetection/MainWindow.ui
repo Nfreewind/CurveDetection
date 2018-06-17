@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Line/Curve Detection</string>
   </property>
   <widget class="QWidget" name="centralWidget"/>
   <widget class="QMenuBar" name="menuBar">
@@ -37,6 +37,7 @@
     </property>
     <addaction name="actionDetectContours"/>
     <addaction name="actionDetectCurves"/>
+    <addaction name="actionDetectLines"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuTool"/>
@@ -71,6 +72,11 @@
   <action name="actionDetectCurves">
    <property name="text">
     <string>Detect Curves</string>
+   </property>
+  </action>
+  <action name="actionDetectLines">
+   <property name="text">
+    <string>Detect Lines</string>
    </property>
   </action>
  </widget>

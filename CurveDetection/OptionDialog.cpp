@@ -3,9 +3,9 @@
 OptionDialog::OptionDialog(QWidget *parent) : QDialog(parent) {
 	ui.setupUi(this);
 
-	ui.lineEditNumIterations->setText("20000");
+	ui.lineEditNumIterations->setText("200000");
 	ui.lineEditMinPoints->setText("200");
-	ui.lineEditMaxErrorRatioToRadius->setText("0.03");
+	ui.lineEditMaxErrorRatioToRadius->setText("0.02");
 	ui.lineEditClusterEpsilon->setText("30");
 	ui.lineEditMinAngle->setText("90");
 	ui.lineEditMinRadius->setText("80");

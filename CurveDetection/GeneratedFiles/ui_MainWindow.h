@@ -30,6 +30,7 @@ public:
     QAction *actionOpen;
     QAction *actionDetectContours;
     QAction *actionDetectCurves;
+    QAction *actionDetectLines;
     QWidget *centralWidget;
     QMenuBar *menuBar;
     QMenu *menuFile;
@@ -50,6 +51,8 @@ public:
         actionDetectContours->setObjectName(QStringLiteral("actionDetectContours"));
         actionDetectCurves = new QAction(MainWindowClass);
         actionDetectCurves->setObjectName(QStringLiteral("actionDetectCurves"));
+        actionDetectLines = new QAction(MainWindowClass);
+        actionDetectLines->setObjectName(QStringLiteral("actionDetectLines"));
         centralWidget = new QWidget(MainWindowClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         MainWindowClass->setCentralWidget(centralWidget);
@@ -75,6 +78,7 @@ public:
         menuFile->addAction(actionExit);
         menuTool->addAction(actionDetectContours);
         menuTool->addAction(actionDetectCurves);
+        menuTool->addAction(actionDetectLines);
 
         retranslateUi(MainWindowClass);
 
@@ -83,12 +87,13 @@ public:
 
     void retranslateUi(QMainWindow *MainWindowClass)
     {
-        MainWindowClass->setWindowTitle(QApplication::translate("MainWindowClass", "MainWindow", Q_NULLPTR));
+        MainWindowClass->setWindowTitle(QApplication::translate("MainWindowClass", "Line/Curve Detection", Q_NULLPTR));
         actionExit->setText(QApplication::translate("MainWindowClass", "Exit", Q_NULLPTR));
         actionOpen->setText(QApplication::translate("MainWindowClass", "Open", Q_NULLPTR));
         actionOpen->setShortcut(QApplication::translate("MainWindowClass", "Ctrl+O", Q_NULLPTR));
         actionDetectContours->setText(QApplication::translate("MainWindowClass", "Detect Contours", Q_NULLPTR));
         actionDetectCurves->setText(QApplication::translate("MainWindowClass", "Detect Curves", Q_NULLPTR));
+        actionDetectLines->setText(QApplication::translate("MainWindowClass", "Detect Lines", Q_NULLPTR));
         menuFile->setTitle(QApplication::translate("MainWindowClass", "File", Q_NULLPTR));
         menuTool->setTitle(QApplication::translate("MainWindowClass", "Tool", Q_NULLPTR));
     } // retranslateUi

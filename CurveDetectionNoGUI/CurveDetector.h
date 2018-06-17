@@ -1,14 +1,7 @@
 #pragma once
 
 #include <vector>
-#include <opencv2/imgproc.hpp>
-#include <opencv2/highgui.hpp>
-
-class Polygon {
-public:
-	std::vector<cv::Point2f> contour;
-	std::vector<std::vector<cv::Point2f>> holes;
-};
+#include "Util.h"
 
 class Circle {
 public:
@@ -48,20 +41,24 @@ public:
 			if (angles[i] - angles[i - 1] > max_gap) {
 				max_gap = angles[i] - angles[i - 1];
 				start_angle = angles[i];
-				end_angle = angles[i - 1];
-				angle_range = CV_PI * 2 - max_gap;
+				end_angle = angles[i - 1] + CV_PI * 2;
+				angle_range = end_angle - start_angle;
 			}
+		}
+
+		// if the arc is almost a complete circle, make it a circle
+		if (angle_range > CV_PI * 1.9) {
+			end_angle = start_angle + CV_PI * 2;
+			angle_range = CV_PI * 2;
 		}
 	}
 };
 
 class CurveDetector {
 protected:
-	CurveDetector();
-	~CurveDetector();
+	CurveDetector() {}
 
 public:
-	static std::vector<Polygon> findContours(const cv::Mat& image);
 	static void detect(const std::vector<cv::Point2f>& polygon, int num_iter, int min_points, float max_error_ratio_to_radius, float cluster_epsilon, float min_angle, float min_radius, float max_radius, std::vector<Circle>& circles);
 	static Circle circleFromPoints(const cv::Point2f& p1, const cv::Point2f& p2, const cv::Point2f& p3);
 	static float crossProduct(const cv::Point2f& a, const cv::Point2f& b);
