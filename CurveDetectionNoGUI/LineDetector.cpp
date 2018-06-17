@@ -1,7 +1,7 @@
 #include "LineDetector.h"
 #include "MeanShift.h"
 
-void LineDetector::detect(const std::vector<cv::Point2f>& polygon, int num_iter, int min_points, float max_error, float cluster_epsilon, float min_length, const std::vector<float>& principal_angles, std::vector<Line>& lines) {
+void LineDetector::detect(std::vector<Point>& polygon, int num_iter, int min_points, float max_error, float cluster_epsilon, float min_length, const std::vector<float>& principal_angles, std::vector<Line>& lines) {
 	lines.clear();
 
 	int N = polygon.size();
@@ -11,17 +11,19 @@ void LineDetector::detect(const std::vector<cv::Point2f>& polygon, int num_iter,
 	for (int i = 0; i < N; i++) {
 		int prev = (i - 3 + N) % N;
 		int next = (i + 3) % N;
-		cv::Point2f dir = polygon[next] - polygon[prev];
+		cv::Point2f dir = polygon[next].pos - polygon[prev].pos;
 		dir /= cv::norm(dir);
-		normals[i] = cv::Point2f(dir.y, -dir.x);
+		polygon[i].normal = cv::Point2f(dir.y, -dir.x);
 	}
 			
 	int N2 = N;
 	while (N2 < cluster_epsilon) N2 += N;
 
-	std::vector<bool> used(N, false);
-	std::vector<int> unused_list(N);
-	for (int i = 0; i < N; i++) unused_list[i] = i;
+	// initialize the unused list
+	std::vector<int> unused_list;
+	for (int i = 0; i < N; i++) {
+		if (!polygon[i].used) unused_list.push_back(i);
+	}
 
 	while (true) {
 		int max_num_points = 0;
@@ -35,14 +37,14 @@ void LineDetector::detect(const std::vector<cv::Point2f>& polygon, int num_iter,
 			for (int iter2 = 0; iter2 < num_iter && unused_list.size() >= 2; iter2++) {
 				index1 = unused_list[rand() % unused_list.size()];
 				index2 = (int)(index1 + rand() % (int)(cluster_epsilon * 2 + 1) - cluster_epsilon + N2) % N;
-				if (index2 == index1 || used[index2]) continue;
+				if (index2 == index1 || polygon[index2].used) continue;
 				break;
 			}
 
 			if (index1 == -1 || index2 == -1) continue;
 
 			// calculate the direction
-			Line line(polygon[index1], polygon[index2] - polygon[index1]);
+			Line line(polygon[index1].pos, polygon[index2].pos - polygon[index1].pos);
 
 			// cancel this proposal if the normal is too different
 			if (std::abs(line.dir.dot(normals[index1])) > 0.1f) continue;
@@ -78,21 +80,21 @@ void LineDetector::detect(const std::vector<cv::Point2f>& polygon, int num_iter,
 			int prev = 0;
 			for (int i = 0; i < N && i - prev < cluster_epsilon; i++) {
 				int idx = (index1 + i) % N;
-				if (used[idx]) break;
-				if (line.distance(polygon[idx]) < max_error) {
+				if (polygon[idx].used) break;
+				if (line.distance(polygon[idx].pos) < max_error) {
 					num_points++;
 					prev = i;
-					positions.push_back((polygon[idx] - polygon[index1]).dot(line.dir));
+					positions.push_back((polygon[idx].pos - polygon[index1].pos).dot(line.dir));
 				}
 			}
 			prev = 0;
 			for (int i = 1; i < N && i - prev < cluster_epsilon; i++) {
 				int idx = (index1 - i + N) % N;
-				if (used[idx]) break;
-				if (line.distance(polygon[idx]) < max_error) {
+				if (polygon[idx].used) break;
+				if (line.distance(polygon[idx].pos) < max_error) {
 					num_points++;
 					prev = i;
-					positions.push_back((polygon[idx] - polygon[index1]).dot(line.dir));
+					positions.push_back((polygon[idx].pos - polygon[index1].pos).dot(line.dir));
 				}
 			}
 
@@ -115,30 +117,30 @@ void LineDetector::detect(const std::vector<cv::Point2f>& polygon, int num_iter,
 		std::vector<int> potentially_used;
 		for (int i = 0; i < N && i - prev < cluster_epsilon; i++) {
 			int idx = (best_index1 + i) % N;
-			if (used[idx]) break;
+			if (polygon[idx].used) break;
 			potentially_used.push_back(idx);
-			if (best_line.distance(polygon[idx]) < max_error) {
-				best_line.points.push_back(polygon[idx]);
+			if (best_line.distance(polygon[idx].pos) < max_error) {
+				best_line.points.push_back(polygon[idx].pos);
 				prev = i;
-				for (auto& pu : potentially_used) used[pu] = true;
+				for (auto& pu : potentially_used) polygon[pu].used = true;
 			}
 		}
 		prev = 0;
 		potentially_used.clear();
 		for (int i = 1; i < N && i - prev < cluster_epsilon; i++) {
 			int idx = (best_index1 - i + N) % N;
-			if (used[idx]) break;
+			if (polygon[idx].used) break;
 			potentially_used.push_back(idx);
-			if (best_line.distance(polygon[idx]) < max_error) {
-				best_line.points.push_back(polygon[idx]);
+			if (best_line.distance(polygon[idx].pos) < max_error) {
+				best_line.points.push_back(polygon[idx].pos);
 				prev = i;
-				for (auto& pu : potentially_used) used[pu] = true;
+				for (auto& pu : potentially_used) polygon[pu].used = true;
 			}
 		}
 
 		// update used list
 		for (int i = unused_list.size() - 1; i >= 0; i--) {
-			if (used[unused_list[i]]) unused_list.erase(unused_list.begin() + i);
+			if (polygon[unused_list[i]].used) unused_list.erase(unused_list.begin() + i);
 		}
 
 		lines.push_back(best_line);

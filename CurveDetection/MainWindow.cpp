@@ -1,7 +1,8 @@
 #include "MainWindow.h"
 #include <QFileDialog>
-#include "OptionDialog.h"
+#include "CurveOptionDialog.h"
 #include "LineOptionDialog.h"
+#include "CurveLineOptionDialog.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 	ui.setupUi(this);
@@ -13,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 	connect(ui.actionDetectContours, SIGNAL(triggered()), this, SLOT(onDetectContours()));
 	connect(ui.actionDetectCurves, SIGNAL(triggered()), this, SLOT(onDetectCurves()));
 	connect(ui.actionDetectLines, SIGNAL(triggered()), this, SLOT(onDetectLines()));
+	connect(ui.actionDetectCurvesLines, SIGNAL(triggered()), this, SLOT(onDetectCurvesLines()));
 }
 
 void MainWindow::onOpen() {
@@ -31,7 +33,7 @@ void MainWindow::onDetectContours() {
 }
 
 void MainWindow::onDetectCurves() {
-	OptionDialog dlg;
+	CurveOptionDialog dlg;
 	if (dlg.exec()) {
 		canvas.detectCurves(dlg.getNumIterations(), dlg.getMinPoints(), dlg.getMaxErrorRatioToRadius(), dlg.getClusterEpsilon(), dlg.getMinAngle() / 180.0 * CV_PI, dlg.getMinRadius(), dlg.getMaxRadius());
 		canvas.update();
@@ -42,6 +44,15 @@ void MainWindow::onDetectLines() {
 	LineOptionDialog dlg;
 	if (dlg.exec()) {
 		canvas.detectLines(dlg.getNumIterations(), dlg.getMinPoints(), dlg.getMaxError(), dlg.getClusterEpsilon(), dlg.getMinLength());
+		canvas.update();
+	}
+}
+
+void MainWindow::onDetectCurvesLines() {
+	CurveLineOptionDialog dlg;
+	if (dlg.exec()) {
+		canvas.detectCurves(dlg.getCurveNumIterations(), dlg.getCurveMinPoints(), dlg.getCurveMaxErrorRatioToRadius(), dlg.getCurveClusterEpsilon(), dlg.getCurveMinAngle() / 180.0 * CV_PI, dlg.getCurveMinRadius(), dlg.getCurveMaxRadius());
+		canvas.detectLines(dlg.getLineNumIterations(), dlg.getLineMinPoints(), dlg.getLineMaxError(), dlg.getLineClusterEpsilon(), dlg.getLineMinLength());
 		canvas.update();
 	}
 }

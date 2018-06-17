@@ -19,17 +19,17 @@ std::vector<Polygon> findContours(const cv::Mat& image) {
 		Polygon polygon;
 		polygon.contour.resize(contours[i].size());
 		for (int j = 0; j < contours[i].size(); j++) {
-			polygon.contour[j] = cv::Point2f(contours[i][j].x, contours[i][j].y);
+			polygon.contour[j] = Point(contours[i][j].x, contours[i][j].y);
 		}
 
 		if (polygon.contour.size() >= 3) {
 			// obtain all the holes inside this contour
 			int hole_id = hierarchy[i][2];
 			while (hole_id != -1) {
-				std::vector<cv::Point2f> hole;
+				std::vector<Point> hole;
 				hole.resize(contours[hole_id].size());
 				for (int j = 0; j < contours[hole_id].size(); j++) {
-					hole[j] = cv::Point2f(contours[hole_id][j].x, contours[hole_id][j].y);
+					hole[j] = Point(contours[hole_id][j].x, contours[hole_id][j].y);
 				}
 				polygon.holes.push_back(hole);
 				hole_id = hierarchy[hole_id][0];

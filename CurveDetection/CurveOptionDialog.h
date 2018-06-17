@@ -1,17 +1,17 @@
 #pragma once
 
 #include <QDialog>
-#include "ui_OptionDialog.h"
+#include "ui_CurveOptionDialog.h"
 
-class OptionDialog : public QDialog {
+class CurveOptionDialog : public QDialog {
 	Q_OBJECT
 
 private:
-	Ui::OptionDialog ui;
+	Ui::CurveOptionDialog ui;
 
 public:
-	OptionDialog(QWidget *parent = Q_NULLPTR);
-	~OptionDialog();
+	CurveOptionDialog(QWidget *parent = Q_NULLPTR);
+	~CurveOptionDialog();
 	
 	int getNumIterations();
 	int getMinPoints();

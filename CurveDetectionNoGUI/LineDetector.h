@@ -36,6 +36,6 @@ protected:
 	LineDetector() {}
 
 public:
-	static void detect(const std::vector<cv::Point2f>& polygon, int num_iter, int min_points, float max_error, float cluster_epsilon, float min_length, const std::vector<float>& principal_angles, std::vector<Line>& lines);
+	static void detect(std::vector<Point>& polygon, int num_iter, int min_points, float max_error, float cluster_epsilon, float min_length, const std::vector<float>& principal_angles, std::vector<Line>& lines);
 };
 

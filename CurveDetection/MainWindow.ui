@@ -38,6 +38,7 @@
     <addaction name="actionDetectContours"/>
     <addaction name="actionDetectCurves"/>
     <addaction name="actionDetectLines"/>
+    <addaction name="actionDetectCurvesLines"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuTool"/>
@@ -77,6 +78,11 @@
   <action name="actionDetectLines">
    <property name="text">
     <string>Detect Lines</string>
+   </property>
+  </action>
+  <action name="actionDetectCurvesLines">
+   <property name="text">
+    <string>Detect Curves/Lines</string>
    </property>
   </action>
  </widget>

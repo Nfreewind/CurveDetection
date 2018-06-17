@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>OptionDialog</class>
- <widget class="QDialog" name="OptionDialog">
+ <class>CurveOptionDialog</class>
+ <widget class="QDialog" name="CurveOptionDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>OptionDialog</string>
+   <string>Curve Option Dialog</string>
   </property>
   <widget class="QPushButton" name="pushButtonOK">
    <property name="geometry">
@@ -202,6 +202,17 @@
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>pushButtonOK</tabstop>
+  <tabstop>pushButtonCancel</tabstop>
+  <tabstop>lineEditNumIterations</tabstop>
+  <tabstop>lineEditMinPoints</tabstop>
+  <tabstop>lineEditMaxErrorRatioToRadius</tabstop>
+  <tabstop>lineEditClusterEpsilon</tabstop>
+  <tabstop>lineEditMinAngle</tabstop>
+  <tabstop>lineEditMinRadius</tabstop>
+  <tabstop>lineEditMaxRadius</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

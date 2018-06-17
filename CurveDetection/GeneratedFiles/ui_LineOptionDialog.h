@@ -78,6 +78,12 @@ public:
         pushButtonOK = new QPushButton(LineOptionDialog);
         pushButtonOK->setObjectName(QStringLiteral("pushButtonOK"));
         pushButtonOK->setGeometry(QRect(40, 140, 91, 31));
+        QWidget::setTabOrder(pushButtonOK, pushButtonCancel);
+        QWidget::setTabOrder(pushButtonCancel, lineEditNumIterations);
+        QWidget::setTabOrder(lineEditNumIterations, lineEditMinPoints);
+        QWidget::setTabOrder(lineEditMinPoints, lineEditMaxError);
+        QWidget::setTabOrder(lineEditMaxError, lineEditClusterEpsilon);
+        QWidget::setTabOrder(lineEditClusterEpsilon, lineEditMinLength);
 
         retranslateUi(LineOptionDialog);
 
@@ -86,7 +92,7 @@ public:
 
     void retranslateUi(QDialog *LineOptionDialog)
     {
-        LineOptionDialog->setWindowTitle(QApplication::translate("LineOptionDialog", "LineOptionDialog", Q_NULLPTR));
+        LineOptionDialog->setWindowTitle(QApplication::translate("LineOptionDialog", "Line Option Dialog", Q_NULLPTR));
         label->setText(QApplication::translate("LineOptionDialog", "min points:", Q_NULLPTR));
         label_3->setText(QApplication::translate("LineOptionDialog", "Cluster epsilon:", Q_NULLPTR));
         label_4->setText(QApplication::translate("LineOptionDialog", "Min length:", Q_NULLPTR));

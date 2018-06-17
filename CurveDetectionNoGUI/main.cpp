@@ -28,11 +28,11 @@ int main(int argc, char *argv[]) {
 		cv::Mat result(image.size(), CV_8UC3, cv::Scalar(255, 255, 255));
 		for (auto& polygon : polygons) {
 			std::vector<cv::Point> pol;
-			for (auto& p : polygon.contour) pol.push_back(p);
+			for (auto& pt : polygon.contour) pol.push_back(pt.pos);
 			cv::polylines(result, pol, true, cv::Scalar(0, 0, 0), 1);
 			for (auto& hole : polygon.holes) {
 				std::vector<cv::Point> pol;
-				for (auto& p : hole) pol.push_back(p);
+				for (auto& pt : hole) pol.push_back(pt.pos);
 				cv::polylines(result, pol, true, cv::Scalar(0, 0, 0), 1);
 			}
 		}

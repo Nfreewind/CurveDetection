@@ -51,7 +51,7 @@ void Canvas::detectCurves(int num_iterations, int min_points, float max_error_ra
 }
 
 void Canvas::detectLines(int num_iterations, int min_points, float max_error, float cluster_epsilon, float min_length) {
-	circles.clear();
+	//circles.clear();
 	lines.clear();
 
 	if (polygons.size() == 0) detectContours();
@@ -59,7 +59,10 @@ void Canvas::detectLines(int num_iterations, int min_points, float max_error, fl
 	std::vector<std::vector<cv::Point2f>> pgons;
 	for (auto& polygon : polygons) {
 		if (polygon.contour.size() < 100) continue;
-		pgons.push_back(polygon.contour);
+
+		std::vector<cv::Point2f> pgon;
+		for (auto& pt : polygon.contour) pgon.push_back(pt.pos);
+		pgons.push_back(pgon);
 	}
 	float principal_orientation = OrientationEstimator::estimate(pgons);
 
@@ -145,13 +148,13 @@ void Canvas::paintEvent(QPaintEvent *event) {
 		for (auto& polygon : polygons) {
 			QPolygon pgon;
 			for (auto& p : polygon.contour) {
-				pgon.push_back(QPoint(p.x * image_scale, p.y * image_scale));
+				pgon.push_back(QPoint(p.pos.x * image_scale, p.pos.y * image_scale));
 			}
 			painter.drawPolygon(pgon);
 			for (auto& hole : polygon.holes) {
 				QPolygon pgon;
 				for (auto& p : hole) {
-					pgon.push_back(QPoint(p.x * image_scale, p.y * image_scale));
+					pgon.push_back(QPoint(p.pos.x * image_scale, p.pos.y * image_scale));
 				}
 				painter.drawPolygon(pgon);
 			}
@@ -163,7 +166,7 @@ void Canvas::paintEvent(QPaintEvent *event) {
 				painter.drawRect(circle.points[i].x * image_scale - 1, circle.points[i].y * image_scale - 1, 3, 3);
 			}
 
-			painter.setPen(QPen(QColor(0, 0, 255), 3));
+			painter.setPen(QPen(QColor(255, 0, 255), 3));
 			painter.drawArc((circle.center.x - circle.radius) * image_scale, (circle.center.y - circle.radius) * image_scale, circle.radius * 2 * image_scale, circle.radius * 2 * image_scale, -circle.start_angle / CV_PI * 180 * 16, -circle.angle_range / CV_PI * 180 * 16);
 		}
 

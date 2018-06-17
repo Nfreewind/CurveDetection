@@ -39,9 +39,6 @@
     <ClCompile Include="Canvas.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OptionDialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\CurveDetectionNoGUI\CurveDetector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -60,15 +57,24 @@
     <ClCompile Include="..\CurveDetectionNoGUI\OrientationEstimator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CurveOptionDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CurveLineOptionDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MainWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="OptionDialog.h">
+    <QtMoc Include="LineOptionDialog.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="LineOptionDialog.h">
+    <QtMoc Include="CurveOptionDialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="CurveLineOptionDialog.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
@@ -76,10 +82,13 @@
     <QtUic Include="MainWindow.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="OptionDialog.ui">
+    <QtUic Include="LineOptionDialog.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="LineOptionDialog.ui">
+    <QtUic Include="CurveOptionDialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="CurveLineOptionDialog.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

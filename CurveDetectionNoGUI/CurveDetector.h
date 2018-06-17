@@ -59,7 +59,7 @@ protected:
 	CurveDetector() {}
 
 public:
-	static void detect(const std::vector<cv::Point2f>& polygon, int num_iter, int min_points, float max_error_ratio_to_radius, float cluster_epsilon, float min_angle, float min_radius, float max_radius, std::vector<Circle>& circles);
+	static void detect(std::vector<Point>& polygon, int num_iter, int min_points, float max_error_ratio_to_radius, float cluster_epsilon, float min_angle, float min_radius, float max_radius, std::vector<Circle>& circles);
 	static Circle circleFromPoints(const cv::Point2f& p1, const cv::Point2f& p2, const cv::Point2f& p3);
 	static float crossProduct(const cv::Point2f& a, const cv::Point2f& b);
 };

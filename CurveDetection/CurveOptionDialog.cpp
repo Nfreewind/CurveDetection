@@ -1,6 +1,6 @@
-#include "OptionDialog.h"
+#include "CurveOptionDialog.h"
 
-OptionDialog::OptionDialog(QWidget *parent) : QDialog(parent) {
+CurveOptionDialog::CurveOptionDialog(QWidget *parent) : QDialog(parent) {
 	ui.setupUi(this);
 
 	ui.lineEditNumIterations->setText("200000");
@@ -15,41 +15,41 @@ OptionDialog::OptionDialog(QWidget *parent) : QDialog(parent) {
 	connect(ui.pushButtonCancel, SIGNAL(clicked()), this, SLOT(onCancel()));
 }
 
-OptionDialog::~OptionDialog() {
+CurveOptionDialog::~CurveOptionDialog() {
 }
 
-int OptionDialog::getNumIterations() {
+int CurveOptionDialog::getNumIterations() {
 	return ui.lineEditNumIterations->text().toInt();
 }
 
-int OptionDialog::getMinPoints() {
+int CurveOptionDialog::getMinPoints() {
 	return ui.lineEditMinPoints->text().toInt();
 }
 
-float OptionDialog::getMaxErrorRatioToRadius() {
+float CurveOptionDialog::getMaxErrorRatioToRadius() {
 	return ui.lineEditMaxErrorRatioToRadius->text().toFloat();
 }
 
-float OptionDialog::getClusterEpsilon() {
+float CurveOptionDialog::getClusterEpsilon() {
 	return ui.lineEditClusterEpsilon->text().toFloat();
 }
 
-float OptionDialog::getMinAngle() {
+float CurveOptionDialog::getMinAngle() {
 	return ui.lineEditMinAngle->text().toFloat();
 }
 
-float OptionDialog::getMinRadius() {
+float CurveOptionDialog::getMinRadius() {
 	return ui.lineEditMinRadius->text().toFloat();
 }
 
-float OptionDialog::getMaxRadius() {
+float CurveOptionDialog::getMaxRadius() {
 	return ui.lineEditMaxRadius->text().toFloat();
 }
 
-void OptionDialog::onOK() {
+void CurveOptionDialog::onOK() {
 	accept();
 }
 
-void OptionDialog::onCancel() {
+void CurveOptionDialog::onCancel() {
 	reject();
 }

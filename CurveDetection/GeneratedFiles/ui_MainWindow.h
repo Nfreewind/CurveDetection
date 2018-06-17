@@ -31,6 +31,7 @@ public:
     QAction *actionDetectContours;
     QAction *actionDetectCurves;
     QAction *actionDetectLines;
+    QAction *actionDetectCurvesLines;
     QWidget *centralWidget;
     QMenuBar *menuBar;
     QMenu *menuFile;
@@ -53,6 +54,8 @@ public:
         actionDetectCurves->setObjectName(QStringLiteral("actionDetectCurves"));
         actionDetectLines = new QAction(MainWindowClass);
         actionDetectLines->setObjectName(QStringLiteral("actionDetectLines"));
+        actionDetectCurvesLines = new QAction(MainWindowClass);
+        actionDetectCurvesLines->setObjectName(QStringLiteral("actionDetectCurvesLines"));
         centralWidget = new QWidget(MainWindowClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         MainWindowClass->setCentralWidget(centralWidget);
@@ -79,6 +82,7 @@ public:
         menuTool->addAction(actionDetectContours);
         menuTool->addAction(actionDetectCurves);
         menuTool->addAction(actionDetectLines);
+        menuTool->addAction(actionDetectCurvesLines);
 
         retranslateUi(MainWindowClass);
 
@@ -94,6 +98,7 @@ public:
         actionDetectContours->setText(QApplication::translate("MainWindowClass", "Detect Contours", Q_NULLPTR));
         actionDetectCurves->setText(QApplication::translate("MainWindowClass", "Detect Curves", Q_NULLPTR));
         actionDetectLines->setText(QApplication::translate("MainWindowClass", "Detect Lines", Q_NULLPTR));
+        actionDetectCurvesLines->setText(QApplication::translate("MainWindowClass", "Detect Curves/Lines", Q_NULLPTR));
         menuFile->setTitle(QApplication::translate("MainWindowClass", "File", Q_NULLPTR));
         menuTool->setTitle(QApplication::translate("MainWindowClass", "Tool", Q_NULLPTR));
     } // retranslateUi
